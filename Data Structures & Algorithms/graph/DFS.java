@@ -40,10 +40,21 @@ public class DFS {
 
         graph[6].add(new edge(6, 5));
     }
-
+    public static void dfs(ArrayList<edge> graph[], int curr, boolean visited[]) {
+        if(visited[curr]) {
+            return;
+        }
+        System.out.print(curr+" ");
+        visited[curr] = true;
+        for(int i=0; i<graph[curr].size(); i++) {
+            edge e = graph[curr].get(i);
+            dfs(graph, e.dest, visited);
+        }
+    }
     public static void main(String[] args) {
         int v = 7;
         ArrayList<edge> graph[] = new ArrayList[v];
         createGraph(graph);
+        dfs(graph, 0, new boolean[v]);
     }
 }
