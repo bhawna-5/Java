@@ -51,23 +51,39 @@ public class DijkstraAlgorithm {
 
 
     }
-    public static void dijkstra(ArrayList<edge>graph[],int src){
-        PriorityQueue<Pair>pq=new PriorityQueue<>();
+
+    public static void dijkstra(ArrayList<edge> graph[], int src) {
+        PriorityQueue<Pair> pq = new PriorityQueue<>();
         int dist[] = new int[graph.length];
         boolean vis[] = new boolean[graph.length];
-        for(int i=0; i<dist.length; i++) {
-            if(i != src) {
+        for (int i = 0; i < dist.length; i++) {
+            if (i != src) {
                 dist[i] = Integer.MAX_VALUE;
             }
         }
         pq.add(new Pair(src, 0));
-        while (!pq.isEmpty()){
-            Pair curr=pq.remove(); 
+        while (!pq.isEmpty()) {
+            Pair curr = pq.remove();
+            if (!vis[curr.n]) vis[curr.n] = true;
+            for (int i = 0; i < graph[curr.n].size(); i++) {
+                edge e = graph[curr.n].get(i);
+                int u = e.src;
+                int v = e.dest;
+                if (!vis[v] && dist[u] + e.weight < dist[v]) {
+                    dist[v] = dist[u] + e.weight;
+                    pq.add(new Pair(v, dist[v]));
+                }
+            }
+        }
+        for (int i = 0; i < dist.length; i++) {
+            System.out.print(dist[i]+" ");
         }
     }
+
     public static void main(String[] args) {
-        int v = 7;
+        int v = 6;
         ArrayList<edge> graph[] = new ArrayList[v];
         createGraph(graph);
+        dijkstra(graph,0);
     }
 }
