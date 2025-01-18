@@ -1,6 +1,7 @@
 package graph;
 
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 public class PrimsAlgorithm {
     static class Edge {
@@ -17,16 +18,16 @@ public class PrimsAlgorithm {
 
     static class Pair implements Comparable<Pair> {
         int n;
-        int path;
+        int cost;
 
-        public Pair(int n, int path) {
+        public Pair(int n, int cost) {
             this.n = n;
-            this.path = path;
+            this.cost = cost;
         }
 
         @Override
         public int compareTo(Pair p2) {
-            return this.path - p2.path;
+            return this.cost - p2.cost;
         }
     }
 
@@ -48,9 +49,27 @@ public class PrimsAlgorithm {
         graph[3].add(new Edge(3, 2, 50));
 
     }
-
+    public static void prim(ArrayList<Edge>graph[],int src){
+        boolean vis[]=new boolean[graph.length];
+        PriorityQueue<Pair>pq=new PriorityQueue<>();
+        int mstCost=0;
+        pq.add(new Pair(0,0));
+        while(!pq.isEmpty()){
+            Pair curr=pq.remove();
+            if(!vis[curr.n]){
+                vis[curr.n]=true;
+                mstCost+=curr.cost;
+                for (int i=0;i<graph[curr.n].size();i++){
+                    Edge e=graph[curr.n].get(i);
+                    pq.add(new Pair(e.dest,e.weight));
+                }
+            }
+        }
+        System.out.println(mstCost);
+    }
     public static void main(String[] args) {
-        ArrayList<Edge> graph[] = new ArrayList[6];
+        ArrayList<Edge> graph[] = new ArrayList[4];
         createGraph(graph);
+        prim(graph,0);
     }
 }
